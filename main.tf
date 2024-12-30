@@ -1,13 +1,13 @@
-resource "azurerm_resource_group" "SpringRG" {
-  name     = "springrg"
+resource "azurerm_resource_group" "springapprg" {
+  name     = "springapprg"
   location = "Central US"
 }
 
-resource "azurerm_kubernetes_cluster" "Springcluster" {
+resource "azurerm_kubernetes_cluster" "springcluster" {
   name                = "springcluster1"
-  location            = azurerm_resource_group.SpringRG.location
-  resource_group_name = azurerm_resource_group.SpringRG.name
-  dns_prefix          = "springappaks"
+  location            = azurerm_resource_group.springapprg.location
+  resource_group_name = azurerm_resource_group.springapprg.name
+  dns_prefix          = "springcluster1"
 
   default_node_pool {
     name       = "default"
@@ -25,12 +25,12 @@ resource "azurerm_kubernetes_cluster" "Springcluster" {
 }
 
 output "client_certificate" {
-  value     = azurerm_kubernetes_cluster.Springcluster.kube_config[0].client_certificate
+  value     = azurerm_kubernetes_cluster.springcluster.kube_config[0].client_certificate
   sensitive = true
 }
 
 output "kube_config" {
-  value = azurerm_kubernetes_cluster.Springcluster.kube_config_raw
+  value = azurerm_kubernetes_cluster.springcluster.kube_config_raw
 
   sensitive = true
 }
@@ -39,7 +39,7 @@ output "kube_config" {
 
 resource "azurerm_container_registry" "springregistry" {
   name                = "springcontainerregistry1"
-  resource_group_name = azurerm_resource_group.SpringRG.name
-  location            = azurerm_resource_group.SpringRG.location
+  resource_group_name = azurerm_resource_group.springapprg.name
+  location            = azurerm_resource_group.springapprg.location
   sku                 = "Premium"
 }
