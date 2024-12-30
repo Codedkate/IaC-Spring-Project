@@ -12,7 +12,7 @@ resource "azurerm_kubernetes_cluster" "spring-boot-app-aks-cluster" {
 
   default_node_pool {
     name       = "default"
-    node_count = 2
+    node_count = 1
     vm_size    = "Standard_D2_v2"
   }
 
@@ -41,6 +41,6 @@ output "kube_config" {
 resource "azurerm_container_registry" "myspringbootrg" {
   name                = "springbootreactacr"
   resource_group_name = azurerm_resource_group.myspringbootrg.name
-  location            = azurerm_resource_group.SpringRG.location
+  location            = azurerm_resource_group.myspringbootrg.location
   sku                 = "Premium"
 }
